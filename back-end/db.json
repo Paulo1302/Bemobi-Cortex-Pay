@@ -1,0 +1,21 @@
+{
+  "users": {
+    "joao_silva": {
+      "id": "joao_silva",
+      "name": "João Silva",
+      "lastPayment": "2024-11-28",
+      "avgPaymentTime": "20:30",
+      "nextBill": {
+        "amount": 89.90,
+        "dueDate": "2024-12-15",
+        "service": "Claro"
+      },
+      "paymentHistory": "8/10 pagamentos pontuais",
+      "preferredMethod": "Pix"
+    }
+  },
+  "notifications": {
+    "joao_silva": []
+  },
+  "event_log": []
+}

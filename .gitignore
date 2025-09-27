@@ -1,0 +1,42 @@
+ Arquivo gerado a partir de um template padrão para Python.
+# Mais informações em: https://github.com/github/gitignore
+
+### Python ###
+# Ambientes Virtuais
+venv/
+*.venv
+env/
+.env
+
+# Arquivos de cache do Python
+__pycache__/
+*.py[cod]
+*$py.class
+
+# Arquivos de teste e cobertura
+.pytest_cache/
+.coverage
+.coverage.*
+htmlcov/
+
+# Bancos de dados
+*.db
+*.sqlite3
+
+# Arquivos de log
+*.log
+
+# Arquivos de distribuição/build
+/dist/
+/build/
+*.egg-info/
+
+# Arquivos de configuração de IDEs e Editores
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Arquivos do sistema operacional
+.DS_Store
+Thumbs.db
