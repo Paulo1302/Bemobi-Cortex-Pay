@@ -382,8 +382,7 @@ const BemobiCognitiveEngine = () => {
         </div>
       </div>
     </div>
-  ); />
+  ); 
 }
-};
 
 export default BemobiCognitiveEngine;
