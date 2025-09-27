@@ -1,0 +1,13 @@
+import React from 'react';
+import './frontend/src/index.css';
+import BemobiCognitiveEngine from './components/BemobiCognitiveEngine';
+
+function App() {
+  return (
+    <div className="App">
+      <BemobiCognitiveEngine />
+    </div>
+  );
+}
+
+export default App;
