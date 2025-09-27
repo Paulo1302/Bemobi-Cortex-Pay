@@ -1,5 +1,5 @@
 import React from 'react';
-import './frontend/src/index.css';
+import './index.css';
 import BCP from './components/BCP';
 
 function App() {
