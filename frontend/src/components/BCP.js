@@ -1,7 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Brain, Shield, Settings, BarChart3, User, TrendingUp, CheckCircle, AlertTriangle, Zap, Target } from 'lucide-react';
 
-const BemobiCognitiveEngine = () => {
+const BCP = () => {
   const [activeAgent, setActiveAgent] = useState('insight');
   const [customerData, setCustomerData] = useState({
     name: 'João Silva',
@@ -385,4 +385,4 @@ const BemobiCognitiveEngine = () => {
   ); 
 }
 
-export default BemobiCognitiveEngine;
+export default BCP;
