@@ -1,6 +1,6 @@
 import React from 'react';
 import './index.css';
-import BCP from './components/BCP';
+import BCP from './components/CortexPayDashboard/BCP';
 function App() {
   return (
     <div className="App">
