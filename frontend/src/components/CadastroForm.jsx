@@ -30,36 +30,56 @@ export default function RegisterScreen({ onRegisterSuccess, goToLogin }) {
     e.preventDefault();
     setError(null);
 
+    // Validações simples no front-end
     if (!isValidCpf(cpf)) {
-      setError('CPF inválido.');
+      setError('CPF inválido. Deve conter 11 dígitos.');
       return;
     }
-    if (!nome) {
-      setError('Nome é obrigatório.');
+    if (!nome.trim()) {
+      setError('O nome é obrigatório.');
       return;
     }
-    if (!email) {
-      setError('Email é obrigatório.');
+    if (!email.trim()) {
+      setError('O email é obrigatório.');
       return;
     }
-    if (!senha) {
-      setError('Senha é obrigatória.');
+    if (senha.length < 6) {
+      setError('A senha deve ter no mínimo 6 caracteres.');
       return;
     }
 
     setLoading(true);
     try {
+      // --- CORREÇÃO PRINCIPAL AQUI ---
+      // Monta o objeto de dados exatamente como o back-end espera.
       const userData = {
         cpf: onlyDigits(cpf),
         name: nome,
-        email,
-        senha
+        password: senha, // Campo renomeado de 'senha' para 'password'
+        // Adiciona os campos obrigatórios que não estão no formulário
+        // com valores padrão para um novo utilizador.
+        financial_features: {
+            "lastPayment": "N/A",
+            "avgPaymentTime": "N/A",
+            "nextBill": { "amount": 0, "dueDate": "N/A", "service": "N/A" },
+            "paymentHistory": "Novo Utilizador",
+            "preferredMethod": "N/A"
+        },
+        security_profile: {
+            "profileType": "Padrão",
+            "usualRegion": "N/A",
+            "dynamicLimit": 500,
+            "biometricsEnabled": false
+        }
       };
 
       const data = await apiService.createUser(userData);
 
+      // Se o registo for bem-sucedido, chama a função de sucesso
       if (onRegisterSuccess) onRegisterSuccess(data);
+
     } catch (err) {
+      // Exibe o erro que vem do back-end (ex: "CPF já registado")
       setError(err.message || 'Erro ao cadastrar');
     } finally {
       setLoading(false);
@@ -101,7 +121,7 @@ export default function RegisterScreen({ onRegisterSuccess, goToLogin }) {
             />
           </div>
 
-          {/* Email */}
+          {/* Email (Apesar de não ser guardado no back-end, mantemos na UI) */}
           <div>
             <label className="block text-sm text-gray-600 mb-1">Email</label>
             <div className="relative">
@@ -125,20 +145,20 @@ export default function RegisterScreen({ onRegisterSuccess, goToLogin }) {
                 type="password"
                 value={senha}
                 onChange={(e) => setSenha(e.target.value)}
-                placeholder="Senha"
+                placeholder="Crie uma senha"
                 className="pl-10 block w-full rounded-lg border border-gray-300 px-3 py-2 text-gray-800 placeholder-gray-400 focus:outline-none focus:ring-2 focus:ring-blue-400"
               />
             </div>
           </div>
 
-          {error && <div className="text-sm text-red-500">{error}</div>}
+          {error && <div className="text-sm text-red-500 text-center">{error}</div>}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full py-2 rounded-lg text-white font-medium bg-gradient-to-r from-green-500 to-teal-600 hover:opacity-90 transition disabled:opacity-50"
           >
-            {loading ? 'Cadastrando...' : 'Cadastrar'}
+            {loading ? 'A cadastrar...' : 'Cadastrar'}
           </button>
         </form>
 

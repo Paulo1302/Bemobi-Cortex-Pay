@@ -2,7 +2,6 @@ import React, { useState } from 'react';
 import { User, Lock } from 'lucide-react';
 import apiService from '../services/apiService';
 
-// LoginScreen.jsx
 export default function LoginScreen({ onLoginSuccess, goToRegister }) {
   const [cpf, setCpf] = useState('');
   const [senha, setSenha] = useState('');
@@ -34,13 +33,16 @@ export default function LoginScreen({ onLoginSuccess, goToRegister }) {
       return;
     }
     if (!senha) {
-      setError('Senha é obrigatória.');
+      setError('A senha é obrigatória.');
       return;
     }
 
     setLoading(true);
     try {
-      const data = await apiService.login({ cpf: onlyDigits(cpf), senha });
+      // --- CORREÇÃO PRINCIPAL AQUI ---
+      // A função `apiService.login` espera dois argumentos: cpf e senha.
+      // Ajustámos a chamada para enviar os dados no formato correto.
+      const data = await apiService.login(onlyDigits(cpf), senha);
 
       if (onLoginSuccess) onLoginSuccess(data);
     } catch (err) {
@@ -86,19 +88,19 @@ export default function LoginScreen({ onLoginSuccess, goToRegister }) {
             </div>
           </div>
 
-          {error && <div className="text-sm text-red-500">{error}</div>}
+          {error && <div className="text-sm text-red-500 text-center">{error}</div>}
 
           <button
             type="submit"
             disabled={loading}
             className="w-full py-2 rounded-lg text-white font-medium bg-gradient-to-r from-blue-500 to-indigo-600 hover:opacity-90 transition disabled:opacity-50"
           >
-            {loading ? 'Entrando...' : 'Entrar'}
+            {loading ? 'A entrar...' : 'Entrar'}
           </button>
         </form>
 
         <div className="mt-6 text-center text-sm text-gray-500">
-          <a href="#" className="hover:underline">Esqueci a senha</a>
+          <a href="#" className="hover:underline">Esqueceu a senha?</a>
         </div>
 
         {/* Botão para ir para cadastro */}
@@ -107,7 +109,7 @@ export default function LoginScreen({ onLoginSuccess, goToRegister }) {
             onClick={goToRegister}
             className="hover:underline text-blue-600 font-medium"
           >
-            Não possui cadastro? Registre-se
+            Não possui cadastro? Registe-se
           </button>
         </div>
       </div>
