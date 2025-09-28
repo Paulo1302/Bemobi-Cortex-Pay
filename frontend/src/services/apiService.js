@@ -2,16 +2,16 @@
 const API_BASE_URL = 'http://127.0.0.1:8000/api/v1';
 
 // Função centralizada para tratar as respostas e os erros da API
-const handleResponse = res => {
-    if (!res.ok) {
-        // Se a resposta não for bem-sucedida (ex: erro 404, 500), lança um erro
-        throw new Error('A resposta da rede não foi OK');
-    }
-    return res.json();
+const handleResponse = async (res) => {
+  if (!res.ok) {
+    const errorBody = await res.json().catch(() => ({}));
+    throw new Error(errorBody.message || 'A resposta da rede não foi OK');
+  }
+  return res.json();
 };
 
 const apiService = {
-  // Funções CRUD para Utilizadores (mantidas como no seu ficheiro)
+  // Funções CRUD para Utilizadores
   getUsers: () => fetch(`${API_BASE_URL}/users`).then(handleResponse),
   createUser: (userData) => fetch(`${API_BASE_URL}/users`, {
     method: 'POST',
@@ -27,23 +27,45 @@ const apiService = {
     method: 'DELETE',
   }).then(handleResponse),
 
-  // Funções de Simulação (CORRIGIDAS)
+  // Funções de Simulação
   getUser: (userId) => fetch(`${API_BASE_URL}/users/${userId}`).then(handleResponse),
   getEventLog: () => fetch(`${API_BASE_URL}/events/log`).then(handleResponse),
   
-  // CORREÇÃO: Adicionado o .then(handleResponse) para garantir o tratamento de erros
   analyzeRisk: (userId) => fetch(`${API_BASE_URL}/actions/analyze-risk`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId }),
   }).then(handleResponse),
 
-  // CORREÇÃO: Adicionado o .then(handleResponse) para garantir o tratamento de erros
   analyzeSecurity: (userId) => fetch(`${API_BASE_URL}/actions/analyze-security`, {
     method: 'POST',
     headers: { 'Content-Type': 'application/json' },
     body: JSON.stringify({ userId }),
   }).then(handleResponse),
+
+  // 🔑 Função de Login com persistência de token
+  login: async (credentials) => {
+    const data = await fetch(`${API_BASE_URL}/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify(credentials),
+    }).then(handleResponse);
+
+    // Se a API devolver token, salvar no localStorage
+    if (data.token || data.access_token) {
+      localStorage.setItem('authToken', data.token || data.access_token);
+    }
+
+    return data;
+  },
+
+  // 🔒 Função auxiliar para obter o token salvo
+  getToken: () => localStorage.getItem('authToken'),
+
+  // 🚪 Função de logout
+  logout: () => {
+    localStorage.removeItem('authToken');
+  },
 };
 
 export default apiService;
