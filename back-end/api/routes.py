@@ -7,6 +7,13 @@ from agents import agent_insight, agent_guardian
 # Cria uma instância do Router. É aqui que vamos registrar todas as rotas da API.
 router = APIRouter()
 
+@router.get("/users")
+def get_all_users():
+    user = db.get_all_users()
+    if not user:
+        raise HTTPException(status_code=404, detail="Nenhum usuário encontrado")
+    return user
+
 @router.get("/users/{user_id}")
 def get_user(user_id: str):
     user = db.get_user(user_id)

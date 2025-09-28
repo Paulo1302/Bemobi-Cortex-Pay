@@ -10,6 +10,9 @@ class Database:
             self._data = json.load(f)
         print('[DB] Banco de dados (db.json) carregado em memória.')
 
+    def get_all_users(self):
+        return list(self._data['users'].keys())
+
     def get_user(self, user_id: str):
         return self._data['users'].get(user_id)
     
