@@ -1,2 +1,11 @@
 fastapi
 uvicorn[standard]
+pydantic
+pydantic-settings
+python-dotenv
+
+# --- Bibliotecas para PostgreSQL e SQLAlchemy ---
+sqlalchemy
+asyncpg         # Driver ASSÍNCRONO para PostgreSQL
+psycopg2-binary # Driver síncrono, bom ter como fallback
+alembic         # Ferramenta para gerir migrações da base de dados

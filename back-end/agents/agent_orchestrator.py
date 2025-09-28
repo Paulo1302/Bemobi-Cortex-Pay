@@ -1,8 +1,12 @@
-# agents/agent_orchestrator.py
-from services.cih import cih
-from data.database import db
+# back-end/agents/agent_orchestrator.py
 
-def on_risk_detected(data: dict):
+from services.cih import cih
+from sqlalchemy.ext.asyncio import AsyncSession
+from data import models as db_models
+
+# A função do Orchestrator agora também pode receber a sessão da BD se precisar
+# de consultar regras de negócio antes de decidir uma estratégia.
+async def on_risk_detected(data: dict):
     user_id = data['userId']
     analysis = data['analysis']
     print(f"🎼 [ORCHESTRATOR] Risco detectado para '{user_id}'. Decidindo estratégia...")
@@ -15,17 +19,11 @@ def on_risk_detected(data: dict):
                 "method": "SMS + Push",
                 "tone": "Empático",
                 "options": ["Parcelar 2x", "Desconto 5%", "Adiar 5 dias"],
-                "value": 89.90 # Adicionando um valor para o Guardian validar
+                "value": 89.90 # Valor para o Guardian validar
             }
         }
-        # Modificação: Publica um evento para VALIDAÇÃO, não para execução.
+        # Publica um evento para VALIDAÇÃO, não para execução direta.
         cih.publish('VALIDATE_ACTION', strategy)
-
-        db.add_event_log({
-            "agent": "orchestrator",
-            "action": "Estratégia Decidida, Aguardando Validação",
-            "details": f"Plano '{strategy['action']}' enviado para o Guardian."
-        })
 
 def initialize():
     cih.subscribe('RISK_DETECTED', on_risk_detected)

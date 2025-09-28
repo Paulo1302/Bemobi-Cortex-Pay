@@ -1,8 +1,0 @@
-{
-  "dependencies": {
-    "lucide-react": "^0.263.1"
-  },
-  "name": "bemobi-cognitive-engine",
-  "description": "Ecossistema de Agentes Inteligentes para Pagamentos - Hackathon Bemobi 2024",
-  "keywords": "[bemobi, hackathon, artificial-intelligence, payment-agents, fintech, react, tailwindcss]"
-}
