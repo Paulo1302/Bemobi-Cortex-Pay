@@ -1,4 +1,4 @@
-from pydantic import BaseModel
+from pydantic import BaseModel, EmailStr
 from typing import Optional, Dict, Any
 
 # --- ESQUEMAS PARA AUTENTICAÇÃO ---
@@ -16,8 +16,12 @@ class TokenData(BaseModel):
 # --- ESQUEMAS PARA A ENTIDADE USER ---
 
 class UserBase(BaseModel):
-    """Campos base partilhados por todos os esquemas de utilizador."""
     name: str
+    
+    # --- NOVO CAMPO DE EMAIL ---
+    email: EmailStr # Usa EmailStr para validar o formato do email
+    # ---------------------------
+
     cpf: str
     status: Optional[str] = 'active'
     is_high_value: Optional[bool] = False
@@ -25,17 +29,20 @@ class UserBase(BaseModel):
     security_profile: Optional[Dict[str, Any]] = None
 
 class UserCreate(BaseModel):
-    # Campos que o usuário DEVE fornecer no formulário
     name: str
+    
+    # --- NOVO CAMPO DE EMAIL ---
+    email: EmailStr
+    # ---------------------------
+
     cpf: str
     password: str
 
-    # Campos que agora são opcionais. Se o front-end não os enviar,
-    # o Pydantic usará estes valores padrão.
     status: Optional[str] = 'active'
     is_high_value: Optional[bool] = False
     financial_features: Optional[Dict[str, Any]] = None
     security_profile: Optional[Dict[str, Any]] = None
+    
 
 class UserUpdate(BaseModel):
     """Esquema usado para atualizar um utilizador. Todos os campos são opcionais."""

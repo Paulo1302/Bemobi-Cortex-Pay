@@ -36,14 +36,17 @@ async def get_all_users(db: AsyncSession, skip: int = 0, limit: int = 100):
     return result.scalars().all()
 
 async def create_user(db: AsyncSession, user: schemas.UserCreate):
-    """Cria um novo utilizador, guardando a senha com hash."""
-    # Gera o hash da senha antes de guardar na base de dados
     hashed_password = get_password_hash(user.password)
     new_user = models.User(
         id=str(uuid.uuid4()),
         name=user.name,
+        
+        # --- NOVO CAMPO DE EMAIL ---
+        email=user.email,
+        # ---------------------------
+        
         cpf=user.cpf,
-        hashed_password=hashed_password, # Guarda o hash, não a senha original
+        hashed_password=hashed_password,
         status=user.status,
         is_high_value=user.is_high_value,
         financial_features=user.financial_features,
@@ -53,6 +56,7 @@ async def create_user(db: AsyncSession, user: schemas.UserCreate):
     await db.commit()
     await db.refresh(new_user)
     return new_user
+
 
 async def update_user(db: AsyncSession, user_id: str, user_update: schemas.UserUpdate):
     """Atualiza os dados de um utilizador existente."""
