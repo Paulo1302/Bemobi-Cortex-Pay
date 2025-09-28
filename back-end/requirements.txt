@@ -9,3 +9,6 @@ sqlalchemy
 asyncpg         # Driver ASSÍNCRONO para PostgreSQL
 psycopg2-binary # Driver síncrono, bom ter como fallback
 alembic         # Ferramenta para gerir migrações da base de dados
+python-jose[cryptography]
+passlib[bcrypt]
+python-multipart
